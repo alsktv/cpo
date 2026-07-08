@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPO 고정밀 반도체 구조 시뮬레이터</title>
+    <title>CPO 고정밀 반도체 구조 시뮬레이터 (Canvas Edition)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -32,52 +32,7 @@
         </aside>
         
         <main id="diagram-container">
-            <svg id="diagram" viewBox="0 0 800 800">
-                <!-- 1. FAU Housing -->
-                <g id="fau-housing">
-                    <rect x="50" y="20" width="700" height="60" fill="#1e293b" stroke="#475569" stroke-width="2" rx="5"/>
-                    <text x="60" y="55" fill="#f8fafc" font-weight="bold">FAU Housing (TMR)</text>
-                </g>
-                <!-- 2. COIT Stage -->
-                <g id="coit-block">
-                    <rect x="200" y="90" width="400" height="50" fill="#334155" stroke="#475569" rx="5"/>
-                    <text x="210" y="120" fill="#38bdf8" font-weight="bold">COIT Stage (SiN WG)</text>
-                </g>
-                <!-- 3. Free Space Gap -->
-                <g id="optical-gap">
-                    <ellipse id="lens-top" cx="400" cy="170" rx="30" ry="15" fill="#a1a1aa" opacity="0.8"/>
-                    <ellipse id="lens-bottom" cx="400" cy="230" rx="30" ry="15" fill="#a1a1aa" opacity="0.8"/>
-                    <line id="laser-beam" x1="400" y1="185" x2="400" y2="215" stroke="#fef08a" stroke-width="4"/>
-                </g>
-                <!-- 4. COIB Stage -->
-                <g id="coib-block">
-                    <rect x="200" y="250" width="400" height="50" fill="#334155" stroke="#475569" rx="5"/>
-                    <text x="210" y="280" fill="#38bdf8" font-weight="bold">COIB Stage (BMR)</text>
-                </g>
-                <!-- 5. 3D COUPE Core (EIC + PIC) -->
-                <g id="core-engine">
-                    <rect x="200" y="320" width="400" height="100" fill="#f59e0b" rx="5"/>
-                    <text x="210" y="350" fill="#020617" font-weight="bold">EIC (Drivers/TIAs)</text>
-                    <rect x="200" y="420" width="400" height="80" fill="#0f172a" stroke="#475569" rx="5"/>
-                    <text x="210" y="450" fill="#f8fafc" font-weight="bold">PIC Layer</text>
-                </g>
-                <!-- 6. Interconnect -->
-                <g id="interconnect-interface">
-                    <rect x="200" y="520" width="400" height="40" fill="#475569" rx="5"/>
-                    <text x="210" y="545" fill="#f8fafc">Interconnect Interface (Bump/SoIC)</text>
-                </g>
-                <!-- 7. Substrate -->
-                <g id="substrate-layer">
-                    <rect x="50" y="580" width="700" height="60" fill="#334155" rx="5"/>
-                    <text x="60" y="615" fill="#f8fafc" font-weight="bold">Substrate / Interposer Layer</text>
-                </g>
-                <!-- 8. ASIC -->
-                <g id="asic-block">
-                    <rect x="50" y="660" width="700" height="100" fill="#7c3aed" rx="10"/>
-                    <text x="60" y="715" fill="#ffffff" font-size="20" font-weight="bold">ASIC (XPU) Compute Block</text>
-                </g>
-            </svg>
-            <canvas id="animation-canvas" width="800" height="800"></canvas>
+            <canvas id="cpoCanvas" width="800" height="800"></canvas>
             <div id="alert-pulse" class="hidden">정렬 경고: 임계값 초과</div>
         </main>
         
