@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPO 고정밀 반도체 구조 시뮬레이터 (Canvas Edition)</title>
+    <title>CPO 고정밀 반도체 구조 시뮬레이터 (Pro Schematic)</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,7 +23,7 @@
                 <label>레이저 입력 전력 (P_in): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
                 <label>도파관: <select id="material"><option value="Si">실리콘 (Si)</option><option value="SiN">질화규소 (SiN)</option></select></label>
                 <label>인터커넥트: <select id="interconnect"><option value="bump">μ범프</option><option value="SoIC">TSMC SoIC</option></select></label>
-                <label>기판: <select id="substrate"><option value="MCM">표준 MCM</option><option value="CoWoS">CoWoS-L (Enhanced)</option></select></label>
+                <label>기판: <select id="substrate"><option value="MCM">Standard MCM</option><option value="InFO">RDL InFO</option><option value="CoWoS">CoWoS-L (Enhanced)</option></select></label>
             </div>
             <div id="tech-info-box">
                 <h3>엔지니어링 인사이트</h3>
@@ -32,8 +32,7 @@
         </aside>
         
         <main id="diagram-container">
-            <canvas id="cpoCanvas" width="800" height="800"></canvas>
-            <div id="alert-pulse" class="hidden">정렬 경고: 임계값 초과</div>
+            <canvas id="cpoCanvas" width="900" height="800"></canvas>
         </main>
         
         <div id="insights-log" class="panel">

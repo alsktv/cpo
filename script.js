@@ -1,9 +1,9 @@
 const canvas = document.getElementById('cpoCanvas');
 const ctx = canvas.getContext('2d');
 const modeSelect = document.getElementById('mode');
+const substrateSelect = document.getElementById('substrate');
 const logEntries = document.getElementById('log-entries');
 
-// Simulation State
 let particles = [];
 let burnout = false;
 
@@ -15,64 +15,70 @@ function log(message) {
 
 function drawSystem() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const substrate = substrateSelect.value;
+    const interconnect = document.getElementById('interconnect').value;
+
+    // 1. Substrate Layer (Dynamic)
+    ctx.fillStyle = substrate === 'MCM' ? '#166534' : '#1e293b';
+    ctx.fillRect(50, 650, 800, 100);
+    ctx.fillStyle = '#fff';
+    ctx.font = '14px Arial';
     
-    // 1. Substrate
-    ctx.fillStyle = '#334155';
-    ctx.fillRect(50, 700, 700, 50); // Foundation
+    if (substrate === 'MCM') {
+        ctx.fillText('Standard MCM | Link: 8000um | Density: 1.0X | Power: 1.0X', 60, 710);
+    } else if (substrate === 'InFO') {
+        ctx.fillText('RDL InFO | Link: 550um | Density: 12.5X | Power: 0.3X', 60, 710);
+    } else {
+        ctx.fillText('CoWoS-L | Link: 500um | Density: 25.0X | BW: 3.6X', 60, 710);
+        ctx.fillText('Eye-Diagram: Wide Open (+24% Margin)', 60, 730);
+    }
     
-    // 2. Interposer
-    ctx.fillStyle = '#475569';
-    ctx.fillRect(50, 650, 700, 50);
-    
-    // 3. ASIC Block (Left)
+    // 2. ASIC (XPU)
     ctx.fillStyle = '#7c3aed';
-    ctx.fillRect(60, 450, 250, 200);
-    
-    // 4. COUPE Optical Engine (Right)
+    ctx.fillRect(60, 450, 250, 150);
+    ctx.fillStyle = '#fff';
+    ctx.fillText('ASIC (XPU)', 70, 470);
+    ctx.fillText('Data Rate: 112 Gbps', 70, 500);
+
+    // 3. COUPE Engine
     ctx.fillStyle = '#f59e0b';
-    ctx.fillRect(350, 450, 350, 200); // PIC Layer
+    ctx.fillRect(400, 450, 350, 150); // PIC
     ctx.fillStyle = '#d97706';
-    ctx.fillRect(350, 350, 350, 100); // EIC Layer
+    ctx.fillRect(400, 350, 350, 100); // EIC
+    
+    ctx.fillStyle = '#fff';
+    ctx.fillText('EIC Die (Drivers / TIAs)', 410, 370);
+    ctx.fillText('PIC Die (Optical Core)', 410, 470);
+    ctx.fillText('MRM (TX WDM)', 420, 500);
+    ctx.fillText('Ge-PD (RX Segment)', 420, 530);
 
-    // Draw Micro components (PD, MRM)
-    ctx.fillStyle = '#ef4444';
-    ctx.fillRect(400, 460, 20, 20); // PD
-    ctx.beginPath();
-    ctx.arc(500, 470, 15, 0, Math.PI*2);
-    ctx.stroke(); // MRM
-
-    // Vertical Optical Stack
+    // 4. Optical Stack
     ctx.strokeStyle = '#fff';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(500, 350); ctx.lineTo(500, 100); ctx.stroke(); // Lens stack
+    ctx.strokeRect(400, 150, 350, 100); // iFAU
+    ctx.fillText('iFAU Fiber Arrays (O-band: 1260-1360nm)', 410, 170);
 }
 
 function updateParticles() {
     const mode = modeSelect.value;
-    const isSoIC = document.getElementById('interconnect').value === 'SoIC';
-    const speed = isSoIC ? 16.6 : 1.0;
+    const speed = (document.getElementById('interconnect').value === 'SoIC') ? 5 : 0.5;
     
-    // Logic for particles based on mode
     if (Math.random() < 0.1) {
         particles.push({
             x: mode === 'TX' ? 185 : 500,
-            y: mode === 'TX' ? 650 : 100,
+            y: 600,
             vx: mode === 'TX' ? speed : 0,
-            vy: mode === 'TX' ? 0 : speed,
-            color: mode === 'TX' ? '#f59e0b' : '#38bdf8'
+            vy: mode === 'TX' ? 0 : speed
         });
     }
 
-    ctx.fillStyle = '#f59e0b';
-    particles.forEach((p, index) => {
+    ctx.fillStyle = mode === 'TX' ? '#f59e0b' : '#38bdf8';
+    particles.forEach((p, i) => {
         p.x += p.vx;
-        p.y += p.vy;
+        p.y -= p.vy;
         ctx.beginPath();
         ctx.arc(p.x, p.y, 3, 0, Math.PI*2);
         ctx.fill();
-        
-        if (p.x > 800 || p.y > 800) particles.splice(index, 1);
+        if (p.x > 900 || p.y < 0) particles.splice(i, 1);
     });
 }
 
@@ -82,16 +88,5 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
-// Thermal Safety
-function checkBurnout() {
-    const material = document.getElementById('material').value;
-    const pin = parseFloat(document.getElementById('pin').value);
-    if (material === 'Si' && pin >= 24.43) {
-        burnout = true;
-        log("CRITICAL: TPA Burnout detected!");
-        document.getElementById('alert-pulse').classList.remove('hidden');
-    }
-}
-
-document.getElementById('pin').addEventListener('input', checkBurnout);
 animate();
+log("시스템 파라미터가 캔버스에 로드되었습니다.");
