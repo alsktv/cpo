@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPO 고정밀 엔지니어링 시뮬레이터</title>
+    <title>CPO 고정밀 반도체 구조 시뮬레이터</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header><h1>CPO 고정밀 엔지니어링 시뮬레이터</h1></header>
+    <header><h1>CPO 고정밀 반도체 구조 시뮬레이터</h1></header>
     <div id="app">
         <aside id="controls">
             <h2>시스템 파라미터</h2>
@@ -26,57 +26,71 @@
         </aside>
         
         <main id="diagram-container">
-            <svg id="diagram" viewBox="0 0 800 600">
-                <!-- iFAU -->
-                <g class="layer" id="ifau-layer" data-info="iFAU(통합 광섬유 어레이 유닛): 열당 최대 80개의 광섬유를 수용할 수 있는 4열 구조입니다. 수직 결합 및 콜리메이팅 빔을 활용하여 40개 이상의 광섬유가 밀집될 때 에지 커플러(EC)에서 발생하는 Beachfront Warpage 왜곡 문제를 완벽하게 해결합니다.">
-                    <rect x="50" y="50" width="700" height="40" fill="#1e293b" stroke="#475569" rx="10"/>
-                    <text x="70" y="75" fill="#f8fafc" font-size="12">iFAU 광섬유 블록</text>
+            <svg id="diagram" viewBox="0 0 800 800">
+                <!-- FAU Housing -->
+                <g id="fau-housing">
+                    <rect x="50" y="50" width="700" height="100" fill="#1e293b" stroke="#475569" stroke-width="2" rx="10"/>
+                    <text x="60" y="80" fill="#f8fafc" font-weight="bold">FAU Housing</text>
+                    <circle cx="100" cy="110" r="10" fill="#94a3b8"/>
+                    <text x="120" y="115" fill="#f8fafc" font-size="12">Fibers</text>
+                    <path d="M100 110 L300 110 L400 150" stroke="#fef08a" stroke-width="2" fill="none"/>
+                    <text x="400" y="150" fill="#fef08a" font-size="12" font-weight="bold">TMR</text>
                 </g>
-                
+
                 <!-- COIT -->
-                <g class="layer" id="coit-layer" data-info="COIT(상부 광 인터커넥트): 고급 팹 리소그래피 공정으로 제작되어 고정밀 행 정렬을 자동화하는 상부 결합 엔진 서브 레이어입니다. 다층 SiN 기반 도파관과 97%의 생산 수율을 보이는 고효율 90도 고급 커플러(AC) 빔 편향기를 채택하였습니다.">
-                    <rect x="200" y="100" width="400" height="40" fill="#334155" stroke="#475569" rx="5"/>
-                    <text x="220" y="125" fill="#f8fafc" font-size="12">COIT 엔진</text>
+                <g id="coit-block">
+                    <rect x="200" y="180" width="400" height="60" fill="#334155" stroke="#475569" rx="5"/>
+                    <text x="210" y="210" fill="#f8fafc" font-weight="bold">COIT</text>
+                    <line x1="210" y1="225" x2="590" y2="225" stroke="#38bdf8" stroke-width="2"/>
+                    <text x="300" y="220" fill="#38bdf8" font-size="12">SiN WG (w/ PBSR)</text>
                 </g>
-                
+
                 <!-- Micro-Lenses -->
-                <g class="layer" id="lens-layer" data-info="실리콘 마이크로 렌즈 쌍 및 에어 갭 링크: 임베디드 실리콘 마이크로 렌즈 쌍이 발산하는 빛을 평행 가우시안 빔으로 콜리메이팅합니다. 이 방식은 36μm까지의 종방향 정렬 간격을 0.5dB 미만의 손실 패널티로 확장하며, 현장 교체 시 약 1.8dB의 추가 손실이 발생합니다.">
-                    <ellipse id="lens-top" cx="400" cy="170" rx="40" ry="20" fill="#a1a1aa" opacity="0.8"/>
-                    <ellipse id="lens-bottom" cx="400" cy="270" rx="40" ry="20" fill="#a1a1aa" opacity="0.8"/>
-                </g>
-                
+                <ellipse id="lens-top" cx="400" cy="270" rx="30" ry="15" fill="#a1a1aa" opacity="0.8"/>
+                <text x="440" y="275" fill="#f8fafc" font-size="12">Micro-Lens</text>
+                <ellipse id="lens-bottom" cx="400" cy="350" rx="30" ry="15" fill="#a1a1aa" opacity="0.8"/>
+                <line id="laser-beam" x1="400" y1="285" x2="400" y2="335" stroke="#fef08a" stroke-width="4"/>
+
                 <!-- EIC & PIC -->
-                <g class="layer" id="eic-layer-group" data-info="EIC 로직 및 포토닉 엔진 드라이버 허브: 초고속 SerDes, 다단 TIA 및 고효율 인버터 드라이버를 포함하는 EIC 스택입니다. 펌프 없는 Cu-Cu 퓨전 본딩을 통해 PIC 상부에 직접 적층되어 드라이버 회로와 냉각 리드 간의 거리를 최소화합니다.">
-                    <rect id="eic-layer" x="200" y="300" width="400" height="50" rx="5" fill="#f59e0b"/>
-                    <text x="220" y="330" fill="#020617" font-weight="bold">EIC 로직</text>
+                <g id="eic-layer">
+                    <rect x="200" y="400" width="400" height="60" fill="#f59e0b" rx="5"/>
+                    <text x="210" y="435" fill="#020617" font-weight="bold">EIC</text>
                 </g>
-                <g class="layer" id="pic-layer-group" data-info="PIC 레이어 및 도파관 코어 채널: 광 집적 회로(PIC) 라우팅 코어입니다. SiN 코어는 <0.01dB/cm의 초저전파 손실과 <0.001dB/turn의 굽힘 손실을 제공합니다. 광대역 스펙트럼 작동은 전체 O-밴드 영역에서 1260 ~ 1360nm를 포괄합니다.">
-                    <rect id="pic-layer" x="200" y="350" width="400" height="70" rx="5" fill="#0f172a"/>
-                    <rect id="waveguide-track" x="220" y="380" width="360" height="10" fill="#38bdf8"/>
+                <g id="pic-layer">
+                    <rect x="200" y="460" width="400" height="80" fill="#0f172a" stroke="#475569" rx="5"/>
+                    <text x="210" y="490" fill="#f8fafc" font-weight="bold">PIC</text>
+                    <line x1="210" y1="500" x2="590" y2="500" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="210" y="515" fill="#f59e0b" font-size="12">SOI</text>
+                    <line x1="210" y1="525" x2="590" y2="525" stroke="#38bdf8" stroke-width="2"/>
+                    <text x="210" y="540" fill="#38bdf8" font-size="12">SiN WG</text>
+                    <rect x="550" y="510" width="30" height="20" fill="#ef4444"/>
+                    <text x="560" y="525" fill="#fff" font-size="10">BMR</text>
+                    <text x="500" y="530" fill="#fff" font-size="10">COIB</text>
                 </g>
-                
-                <!-- Laser Path -->
-                <line id="laser-beam" x1="400" y1="170" x2="400" y2="270" stroke="#fef08a" stroke-width="4"/>
+
+                <!-- Interconnect -->
+                <g id="interconnect-interface">
+                    <text x="210" y="570" fill="#f8fafc" font-weight="bold">Interconnect Interface (μbump / SoIC Bond)</text>
+                    <g id="bond-nodes"></g>
+                </g>
+
+                <!-- Substrate -->
+                <g id="substrate-layer">
+                    <rect x="50" y="600" width="700" height="150" fill="#334155" rx="5"/>
+                    <text x="60" y="630" fill="#f8fafc" font-weight="bold">Substrate / Advanced Interposer</text>
+                </g>
             </svg>
             <div id="alert-pulse" class="hidden">정렬 경고: 임계값 초과</div>
         </main>
         
-        <aside id="info-panel">
-            <h2>구조적 원리</h2>
-            <div id="layer-description">레이어를 마우스로 올리거나 클릭하여 상세 정보를 확인하세요.</div>
-        </aside>
+        <div id="insights-log" class="panel">
+            <h3>엔지니어링 인사이트 로그</h3>
+            <ul id="log-entries">
+                <li>시스템 초기화 완료.</li>
+            </ul>
+        </div>
     </div>
     
-    <footer id="glossary">
-        <h2>엔지니어링 용어집</h2>
-        <div class="glossary-grid">
-            <div class="g-item"><strong>측면 오프셋 (ΔY/ΔZ):</strong> 모드 중첩 적분에 의해 결정되며, ±1.6μm를 초과하는 오정렬은 지수적 전력 감쇠를 유발하여 0.5dB 손실 임계값을 넘습니다.</div>
-            <div class="g-item"><strong>종방향 간격 (ΔX):</strong> 평행 콜리메이팅 빔 매핑을 통해 빔 경계가 잘리기 전까지 최대 36μm까지의 간격 확장을 허용합니다.</div>
-            <div class="g-item"><strong>레이저 입력 전력 (P_in):</strong> 고출력 CW 전력은 실리콘 내 비선형 2광자 흡수(TPA) 및 자유 캐리어 흡수(FCA)를 유발하여 24.43dBm에서 열적 파괴를 초래합니다.</div>
-            <div class="g-item"><strong>인터커넥트 본딩:</strong> 펌프 없는 SoIC 기술은 피치를 50μm에서 9μm로 줄여 기생 커패시턴스를 낮추고 다이 간 속도를 16.6배 향상시킵니다.</div>
-            <div class="g-item"><strong>기판 차폐 플랫폼:</strong> 표준 유기 MCM에서 CoWoS-L 인터포저로 업그레이드하면 배선 길이가 8000μm에서 500μm로 단축되어 라우팅 밀도가 25배 증가합니다.</div>
-        </div>
-    </footer>
-    <script src="script.js"></script>
+    <script src="simulation_engine.js"></script>
 </body>
 </html>
