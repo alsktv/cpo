@@ -2,20 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CPO Interconnect Simulator</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body { font-family: sans-serif; padding: 20px; }
-        .controls { margin-bottom: 20px; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CPO Interactive Simulator</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>CPO Interconnect Simulator</h1>
-    <div class="controls">
-        <label>Lateral Offset (um): <input type="range" id="dy" min="-5" max="5" value="0"></label>
-        <label>Input Power (dBm): <input type="range" id="pin" min="0" max="30" value="20"></label>
+    <div id="app">
+        <section id="controls">
+            <h2>Controls</h2>
+            <label>Misalignment ΔY (µm): <input type="range" id="dy" min="-5" max="5" step="0.1" value="0"></label>
+            <label>Input Power (dBm): <input type="range" id="pin" min="0" max="30" step="0.1" value="20"></label>
+            <label>Waveguide: 
+                <select id="material">
+                    <option value="Si">Silicon (Si)</option>
+                    <option value="SiN">Silicon Nitride (SiN)</option>
+                </select>
+            </label>
+            <label>Interconnect: 
+                <select id="interconnect">
+                    <option value="bump">Micro-bump</option>
+                    <option value="SoIC">TSMC SoIC™</option>
+                </select>
+            </label>
+            <div id="status">Status: Normal</div>
+        </section>
+        <section id="visualization">
+            <div class="layer" id="layer-ifau">iFAU Fiber Entry</div>
+            <div class="layer" id="layer-coit">COIT Stage</div>
+            <div class="layer" id="layer-lens-gap">
+                <div id="beam"></div>
+                Micro-Lens & Gap
+            </div>
+            <div class="layer" id="layer-eic">EIC / Driver</div>
+            <div class="layer" id="layer-pic">PIC / Waveguide</div>
+            <div class="layer" id="layer-coib">COIB Stage</div>
+            <div class="layer" id="layer-substrate">Enhanced Interposer</div>
+        </section>
     </div>
-    <canvas id="chart"></canvas>
-    <script src="app.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

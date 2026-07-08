@@ -1,0 +1,62 @@
+:root {
+    --beam-width: 10px;
+    --beam-opacity: 1;
+    --thermal-color: #00ff00;
+    --signal-speed: 1s;
+    --node-size: 20px;
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+}
+
+#app {
+    display: flex;
+    height: 100vh;
+}
+
+#controls {
+    width: 300px;
+    padding: 20px;
+    border-right: 1px solid #444;
+}
+
+#controls label {
+    display: block;
+    margin-bottom: 15px;
+}
+
+#visualization {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.layer {
+    border: 1px solid #555;
+    padding: 10px;
+    margin: 2px;
+    border-radius: 4px;
+    background: #2a2a2a;
+}
+
+#beam {
+    width: var(--beam-width);
+    height: 20px;
+    background: var(--thermal-color);
+    opacity: var(--beam-opacity);
+    transition: all 0.2s;
+}
+
+#status {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #777;
+}
