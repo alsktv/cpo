@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CPO Interconnect Simulator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .controls { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>CPO Interconnect Simulator</h1>
+    <div class="controls">
+        <label>Lateral Offset (um): <input type="range" id="dy" min="-5" max="5" value="0"></label>
+        <label>Input Power (dBm): <input type="range" id="pin" min="0" max="30" value="20"></label>
+    </div>
+    <canvas id="chart"></canvas>
+    <script src="app.js"></script>
+</body>
+</html>

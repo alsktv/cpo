@@ -1,0 +1,8 @@
+{
+  "name": "cpo-simulator",
+  "version": "1.0.0",
+  "description": "High-bandwidth CPO Interconnect Simulator",
+  "scripts": {
+    "build": "mkdir -p dist && cp index.html app.js dist/"
+  }
+}
