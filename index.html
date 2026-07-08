@@ -2,45 +2,29 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPO 고정밀 반도체 구조 시뮬레이터 (Pro Schematic)</title>
+    <title>CPO Advanced Schematic Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header><h1>CPO 고정밀 반도체 구조 시뮬레이터</h1></header>
+    <header>
+        <h1>CPO Advanced Schematic Simulator</h1>
+    </header>
     <div id="app">
         <aside id="controls">
-            <h2>시스템 파라미터</h2>
-            <div class="control-group">
-                <label>동작 모드:
-                    <select id="mode">
-                        <option value="TX">Transmission (TX) Mode</option>
-                        <option value="RX">Receiver (RX) Mode</option>
-                    </select>
-                </label>
-                <label>레이저 입력 전력 (P_in): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
-                <label>도파관: <select id="material"><option value="Si">실리콘 (Si)</option><option value="SiN">질화규소 (SiN)</option></select></label>
-                <label>인터커넥트: <select id="interconnect"><option value="bump">μ범프</option><option value="SoIC">TSMC SoIC</option></select></label>
-                <label>기판: <select id="substrate"><option value="MCM">Standard MCM</option><option value="InFO">RDL InFO</option><option value="CoWoS">CoWoS-L (Enhanced)</option></select></label>
-            </div>
+            <label>Mode: <select id="mode"><option value="TX">TX (Transmit)</option><option value="RX">RX (Receive)</option></select></label>
+            <label>Laser Power (P_in): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
+            <label>Substrate: <select id="substrate"><option value="Standard">Standard MCM</option><option value="RDL">RDL InFO</option><option value="CoWoS">CoWoS-L (Enhanced)</option></select></label>
+            <label>Interconnect: <select id="interconnect"><option value="bump">μ범프</option><option value="SoIC">TSMC SoIC</option></select></label>
             <div id="tech-info-box">
-                <h3>엔지니어링 인사이트</h3>
-                <p id="insight-text">파라미터를 조정하여 물리적 특성을 탐색하세요.</p>
+                <strong>System Insights</strong>
+                <div id="insights-log"></div>
             </div>
         </aside>
-        
         <main id="diagram-container">
-            <canvas id="cpoCanvas" width="1000" height="800"></canvas>
+            <canvas id="cpoCanvas" width="1000" height="600"></canvas>
+            <div id="status-banner"></div>
         </main>
-        
-        <div id="insights-log" class="panel">
-            <h3>엔지니어링 인사이트 로그</h3>
-            <ul id="log-entries">
-                <li>시스템 초기화 완료.</li>
-            </ul>
-        </div>
     </div>
-    
     <script src="script.js"></script>
 </body>
 </html>

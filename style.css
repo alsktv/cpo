@@ -1,10 +1,13 @@
 :root {
-    --bg-color: #020617;
-    --sidebar-bg: #1e293b;
+    --bg-color: #0f172a;
+    --panel-bg: #1e293b;
+    --sidebar-bg: #334155;
     --text-main: #f8fafc;
-    --accent: #38bdf8;
-    --panel-bg: #0f172a;
-    --warning: #dc2626;
+    --blue: #38bdf8;
+    --neon-yellow: #facc15;
+    --neon-cyan: #22d3ee;
+    --amber: #fbbf24;
+    --charcoal: #475569;
 }
 
 body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; }
@@ -17,6 +20,8 @@ header { padding: 10px 20px; background: var(--panel-bg); text-align: center; bo
 
 #diagram-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; background: #000; overflow: hidden; }
 #cpoCanvas { cursor: crosshair; }
-#insights-log { width: 300px; background: var(--panel-bg); padding: 20px; border-left: 1px solid #334155; overflow-y: auto; font-size: 0.9em; }
 
-#tech-info-box { background: #334155; padding: 15px; border-radius: 5px; margin-top: auto; }
+#status-banner { position: absolute; top: 20px; left: 50%; transform: translateX(-50%); font-size: 2em; color: red; font-weight: bold; pointer-events: none; }
+
+#tech-info-box { background: var(--panel-bg); padding: 15px; border-radius: 5px; margin-top: auto; font-size: 0.8em; }
+#insights-log { margin-top: 10px; height: 100px; overflow-y: auto; }
