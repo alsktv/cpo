@@ -13,15 +13,17 @@
         <aside id="controls">
             <label>Mode: <select id="mode"><option value="TX">TX (Transmit)</option><option value="RX">RX (Receive)</option></select></label>
             <label>Laser Power (P_in): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
+            <label>Gap: <input type="range" id="gap" min="0" max="50" step="1" value="10"></label>
             <label>Substrate: <select id="substrate"><option value="Standard">Standard MCM</option><option value="RDL">RDL InFO</option><option value="CoWoS">CoWoS-L (Enhanced)</option></select></label>
             <label>Interconnect: <select id="interconnect"><option value="bump">μ범프</option><option value="SoIC">TSMC SoIC</option></select></label>
+            <label>Waveguide: <select id="material"><option value="Si">실리콘 (Si)</option><option value="SiN">질화규소 (SiN)</option></select></label>
             <div id="tech-info-box">
                 <strong>System Insights</strong>
                 <div id="insights-log"></div>
             </div>
         </aside>
         <main id="diagram-container">
-            <canvas id="cpoCanvas" width="1000" height="600"></canvas>
+            <canvas id="cpoCanvas" width="1000" height="800"></canvas>
             <div id="status-banner"></div>
         </main>
     </div>

@@ -2,9 +2,12 @@ const canvas = document.getElementById('cpoCanvas');
 const ctx = canvas.getContext('2d');
 const modeEl = document.getElementById('mode');
 const pinEl = document.getElementById('pin');
+const gapEl = document.getElementById('gap');
 const substrateEl = document.getElementById('substrate');
 const interconnectEl = document.getElementById('interconnect');
+const materialEl = document.getElementById('material');
 const statusBanner = document.getElementById('status-banner');
+const logEl = document.getElementById('insights-log');
 
 let particles = [];
 let isBurnedOut = false;
@@ -15,8 +18,8 @@ class Particle {
         this.size = type === 'light' ? 4 : 2;
     }
     update() {
-        this.x += this.speed;
-        if (this.x > canvas.width) this.x = 0;
+        if (this.type === 'elec') this.x += this.speed;
+        else this.x += this.speed; // Light speed adjustment
     }
     draw() {
         ctx.fillStyle = this.color;
@@ -26,67 +29,54 @@ class Particle {
     }
 }
 
-function drawGeometricShapes() {
+function drawSchematic() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const gap = parseFloat(gapEl.value);
+
+    // Top: iFAU/COIT
+    ctx.fillStyle = '#1e293b'; ctx.fillRect(100, 50, 800, 50); // iFAU
+    ctx.fillStyle = '#475569'; ctx.fillRect(100, 100, 800, 50); // COIT
+    ctx.fillStyle = '#d4af37'; ctx.fillRect(500, 100, 50, 50); // TMR Mirror
+
+    // Lenses
+    ctx.strokeStyle = '#fff';
+    ctx.beginPath(); ctx.arc(525, 150 + gap/2, 20, 0, Math.PI); ctx.stroke(); // Top lens
+    ctx.beginPath(); ctx.arc(525, 170 + gap/2, 20, Math.PI, 0); ctx.stroke(); // Bottom lens
+
+    // Middle: COUPE/PIC/EIC
+    ctx.fillStyle = '#334155'; ctx.fillRect(400, 250, 400, 150); // PIC/EIC
     
-    // Draw Substrate
-    ctx.fillStyle = '#1e293b';
-    ctx.fillRect(0, 500, canvas.width, 100);
-    
-    // ASIC
-    ctx.fillStyle = '#334155';
-    ctx.fillRect(100, 350, 200, 150);
-    ctx.fillStyle = '#fff';
-    ctx.fillText('ASIC', 180, 425);
-    
-    // COUPE
-    ctx.fillStyle = '#475569';
-    ctx.fillRect(500, 300, 300, 200);
-    
-    // PIC Components
-    // Ring Modulator
-    ctx.strokeStyle = '#22d3ee';
-    ctx.beginPath(); ctx.arc(600, 400, 20, 0, Math.PI * 2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(600, 400, 15, 0, Math.PI * 2); ctx.stroke();
-    
-    // Ge-PD
-    ctx.fillStyle = '#fbbf24';
-    ctx.fillRect(700, 380, 40, 40);
-    
-    // TSVs
-    ctx.strokeStyle = '#38bdf8';
-    ctx.lineWidth = 4;
-    for(let i = 0; i < 5; i++) {
-        ctx.beginPath(); ctx.moveTo(550 + i * 40, 500); ctx.lineTo(550 + i * 40, 350); ctx.stroke();
+    // Bottom: ASIC/Interposer
+    ctx.fillStyle = '#1e293b'; ctx.fillRect(50, 450, 800, 100); // Substrate
+
+    if (isBurnedOut) {
+        statusBanner.innerText = "CATASTROPHIC BURN-OUT";
+        ctx.strokeStyle = 'red'; ctx.lineWidth = 5;
+        ctx.beginPath(); ctx.moveTo(400, 300); ctx.lineTo(800, 300); ctx.stroke(); // Fracture
     }
 }
 
 function animate() {
-    if (isBurnedOut) {
-        statusBanner.innerText = "CATASTROPHIC BURN-OUT";
-        ctx.strokeStyle = 'red'; ctx.lineWidth = 2;
-        ctx.beginPath(); ctx.moveTo(500, 400); ctx.lineTo(800, 400); ctx.stroke();
-        return;
-    }
-    
-    drawGeometricShapes();
+    drawSchematic();
     particles.forEach(p => { p.update(); p.draw(); });
+    particles = particles.filter(p => p.x < canvas.width && p.x > 0);
     requestAnimationFrame(animate);
 }
 
 function checkBurnout() {
-    if (parseFloat(pinEl.value) >= 24.43 && substrateEl.value === 'Standard') {
-        isBurnedOut = true;
-    } else {
-        isBurnedOut = false;
-        statusBanner.innerText = "";
-    }
+    isBurnedOut = (parseFloat(pinEl.value) >= 24.43 && materialEl.value === 'Si');
+    if (isBurnedOut) statusBanner.innerText = "CATASTROPHIC BURN-OUT";
+    else statusBanner.innerText = "";
 }
 
 pinEl.addEventListener('input', checkBurnout);
-// Simple particle generation
+materialEl.addEventListener('change', checkBurnout);
+
+// Particle loop
 setInterval(() => {
-    particles.push(new Particle(100, 450, modeEl.value === 'TX' ? '#38bdf8' : '#22d3ee', 2, 'elec'));
+    if (isBurnedOut) return;
+    const color = modeEl.value === 'TX' ? '#38bdf8' : '#22d3ee';
+    particles.push(new Particle(100, 450, color, 5, 'elec'));
 }, 500);
 
 animate();
