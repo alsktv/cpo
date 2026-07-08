@@ -1,62 +1,25 @@
 :root {
-    --beam-width: 10px;
-    --beam-opacity: 1;
-    --thermal-color: #00ff00;
-    --signal-speed: 1s;
-    --node-size: 20px;
-    --bg-color: #1a1a1a;
-    --text-color: #e0e0e0;
+    --bg-color: #0b0e14;
+    --panel-bg: #1a1f26;
+    --text-color: #d1d5db;
+    --accent-color: #38bdf8;
+    --beam-color: #fbbf24;
+    --burnout-color: #ef4444;
+    --thermal-bg: #f59e0b; /* Orange-ish */
 }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-}
+body { background-color: var(--bg-color); color: var(--text-color); font-family: 'Segoe UI', sans-serif; margin: 0; }
+#app { display: flex; height: 100vh; }
+#controls { width: 350px; padding: 20px; background: var(--panel-bg); border-right: 1px solid #374151; }
+#visualization { flex-grow: 1; padding: 40px; display: flex; align-items: center; justify-content: center; }
 
-#app {
-    display: flex;
-    height: 100vh;
-}
+.layer { border: 1px solid #4b5563; padding: 15px; margin: 5px 0; background: #1f2937; border-radius: 6px; text-align: center; }
+.stack { display: flex; flex-direction: column; width: 100%; max-width: 600px; }
 
-#controls {
-    width: 300px;
-    padding: 20px;
-    border-right: 1px solid #444;
-}
+#beam-svg { width: 100%; height: 50px; stroke: var(--beam-color); stroke-width: 3; fill: none; }
+.blur { filter: blur(4px); }
+#alert-box { color: white; background: var(--burnout-color); padding: 10px; margin-top: 10px; }
+.hidden { display: none; }
 
-#controls label {
-    display: block;
-    margin-bottom: 15px;
-}
-
-#visualization {
-    flex-grow: 1;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-}
-
-.layer {
-    border: 1px solid #555;
-    padding: 10px;
-    margin: 2px;
-    border-radius: 4px;
-    background: #2a2a2a;
-}
-
-#beam {
-    width: var(--beam-width);
-    height: 20px;
-    background: var(--thermal-color);
-    opacity: var(--beam-opacity);
-    transition: all 0.2s;
-}
-
-#status {
-    margin-top: 20px;
-    padding: 10px;
-    border: 1px solid #777;
-}
+#layer-eic { background-color: var(--thermal-bg); transition: background 0.5s; }
+#eye-diagram { color: #10b981; font-weight: bold; margin-top: 10px; border: 1px solid #10b981; padding: 5px; }

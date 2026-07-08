@@ -3,40 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPO Interactive Simulator</title>
+    <title>CPO Architectural Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
         <section id="controls">
-            <h2>Controls</h2>
-            <label>Misalignment ΔY (µm): <input type="range" id="dy" min="-5" max="5" step="0.1" value="0"></label>
-            <label>Input Power (dBm): <input type="range" id="pin" min="0" max="30" step="0.1" value="20"></label>
-            <label>Waveguide: 
+            <h2>CPO Control Panel</h2>
+            <label>ΔY / ΔZ Lateral Offset (μm): <input type="range" id="dy" min="0" max="5" step="0.1" value="1.6"></label>
+            <label>Longitudinal Gap (μm): <input type="range" id="gap" min="0" max="50" step="1" value="36"></label>
+            <label>Waveguide Material: 
                 <select id="material">
                     <option value="Si">Silicon (Si)</option>
                     <option value="SiN">Silicon Nitride (SiN)</option>
                 </select>
             </label>
-            <label>Interconnect: 
+            <label>Input Laser Power (dBm): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
+            <label>Interconnect Bonding: 
                 <select id="interconnect">
-                    <option value="bump">Micro-bump</option>
+                    <option value="bump">Conventional μbump</option>
                     <option value="SoIC">TSMC SoIC™</option>
                 </select>
             </label>
-            <div id="status">Status: Normal</div>
+            <label>Substrate Shielding: 
+                <select id="substrate">
+                    <option value="MCM">Standard MCM</option>
+                    <option value="InFO">RDL InFO</option>
+                    <option value="CoWoS">CoWoS-L</option>
+                </select>
+            </label>
+            <div id="alert-box" class="hidden">Optical Alignment Alert!</div>
         </section>
         <section id="visualization">
-            <div class="layer" id="layer-ifau">iFAU Fiber Entry</div>
-            <div class="layer" id="layer-coit">COIT Stage</div>
-            <div class="layer" id="layer-lens-gap">
-                <div id="beam"></div>
-                Micro-Lens & Gap
+            <div class="stack">
+                <div class="layer" id="layer-ifau">iFAU Fiber Block</div>
+                <div class="layer" id="layer-coit">COIT Stage & Upper Grating</div>
+                <div class="layer" id="layer-gap">Lens Open Gap Area <svg id="beam-svg"><path id="beam-path" d="" /></svg></div>
+                <div class="layer" id="layer-coib">COIB Stage</div>
+                <div class="layer" id="layer-eic">EIC Logic & Driver Hub</div>
+                <div class="layer" id="layer-pic">PIC Layer / Waveguide Core</div>
+                <div class="layer" id="layer-substrate">Enhanced Interposer Substrate <div id="eye-diagram" class="hidden">Eye Diagram Open</div></div>
             </div>
-            <div class="layer" id="layer-eic">EIC / Driver</div>
-            <div class="layer" id="layer-pic">PIC / Waveguide</div>
-            <div class="layer" id="layer-coib">COIB Stage</div>
-            <div class="layer" id="layer-substrate">Enhanced Interposer</div>
         </section>
     </div>
     <script src="script.js"></script>
