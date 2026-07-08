@@ -3,52 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPO High-Fidelity Simulator</title>
+    <title>CPO High-Fidelity Engineering Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <header><h1>CPO High-Fidelity Engineering Simulator</h1></header>
     <div id="app">
         <aside id="controls">
             <h2>System Parameters</h2>
             <div class="control-group">
-                <label>Lateral Offset (ΔY): <input type="range" id="dy" min="0" max="5" step="0.1" value="1.6"></label>
-                <label>Longitudinal Gap: <input type="range" id="gap" min="0" max="50" step="1" value="36"></label>
-                <label>Laser Power (P_in): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
+                <label>Lateral Offset (ΔY/ΔZ): <input type="range" id="dy" min="0" max="5" step="0.1" value="1.6"></label>
+                <label>Longitudinal Gap (ΔX): <input type="range" id="gap" min="0" max="50" step="1" value="36"></label>
+                <label>Laser Input Power (P_in): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
                 <label>Waveguide: <select id="material"><option value="Si">Silicon</option><option value="SiN">Silicon Nitride</option></select></label>
                 <label>Interconnect: <select id="interconnect"><option value="bump">μbump</option><option value="SoIC">TSMC SoIC</option></select></label>
                 <label>Substrate: <select id="substrate"><option value="MCM">Standard MCM</option><option value="InFO">RDL InFO</option><option value="CoWoS">CoWoS-L</option></select></label>
             </div>
-            <div id="alert-pulse" class="hidden">CRITICAL ALIGNMENT ALERT</div>
+            <div id="tech-info-box">
+                <h3>Engineering Insight</h3>
+                <p id="insight-text">Adjust parameters to explore physics</p>
+            </div>
         </aside>
+        
         <main id="diagram-container">
             <svg id="diagram" viewBox="0 0 800 600">
-                <!-- iFAU Fiber Array -->
-                <rect x="50" y="50" width="700" height="40" fill="url(#fiberGrad)" rx="10"/>
+                <!-- iFAU -->
+                <g class="layer" id="ifau-layer" data-info="iFAU Fiber Block Container: Integrated Fiber Array Unit (iFAU) that scales up to 80 fibers per row and 4 rows. Leverages vertical coupling with collimating beams to completely eliminate the Beachfront Warpage distortion issue found in edge couplers (EC) when density exceeds 40+ fibers.">
+                    <rect x="50" y="50" width="700" height="40" fill="#1e293b" stroke="#475569" rx="10"/>
+                    <text x="70" y="75" fill="#f8fafc" font-size="12">iFAU Fiber Block</text>
+                </g>
+                
+                <!-- COIT -->
+                <g class="layer" id="coit-layer" data-info="COIT (Complimentary Optical Interconnect Top): Upper coupling engine sub-layer fabricated via advanced fab lithography toolbox to automate high-precision row alignment. Employs multi-layer SiN-based waveguides integrated with a high-efficiency 90-degree Advanced Coupler (AC) beam deflector showing a 97% production tape-out yield.">
+                    <rect x="200" y="100" width="400" height="40" fill="#334155" stroke="#475569" rx="5"/>
+                    <text x="220" y="125" fill="#f8fafc" font-size="12">COIT Engine</text>
+                </g>
                 
                 <!-- Micro-Lenses -->
-                <ellipse id="lens-top" cx="400" cy="150" rx="40" ry="20" fill="#a1a1aa" opacity="0.8"/>
-                <ellipse id="lens-bottom" cx="400" cy="250" rx="40" ry="20" fill="#a1a1aa" opacity="0.8"/>
+                <g class="layer" id="lens-layer" data-info="Silicon Micro-Lens Pair & Air Gap Link: Free-space optical channel equipped with a pair of embedded silicon micro-lenses that collimate the divergent light into parallel Gaussian beams ($w(x) = w_0 \sqrt{1+(x/x_R)^2}$). This collimation expands the longitudinal alignment gap tolerance up to an outstanding 36μm with a mere 0.5 dB loss penalty. Field-serviceable replacement adds around ~1.8 dB of marginal loss.">
+                    <ellipse id="lens-top" cx="400" cy="170" rx="40" ry="20" fill="#a1a1aa" opacity="0.8"/>
+                    <ellipse id="lens-bottom" cx="400" cy="270" rx="40" ry="20" fill="#a1a1aa" opacity="0.8"/>
+                </g>
                 
-                <!-- Laser Beam Path -->
-                <line id="laser-beam" x1="400" y1="150" x2="400" y2="250" stroke="#fef08a" stroke-width="6"/>
-
-                <!-- COUPE Engine (EIC on PIC) -->
-                <rect id="coupe-block" x="200" y="300" width="400" height="120" rx="5" fill="#1e293b"/>
-                <rect id="eic-layer" x="200" y="300" width="400" height="50" rx="5" fill="#f59e0b"/>
-                <rect id="pic-layer" x="200" y="350" width="400" height="70" rx="5" fill="#0f172a"/>
-                <rect id="waveguide-track" x="220" y="380" width="360" height="10" fill="#38bdf8"/>
+                <!-- EIC & PIC -->
+                <g class="layer" id="eic-layer-group" data-info="EIC Logic & Photonic Engine Driver Hub: Electronic Integrated Circuit (EIC) stack housing ultra-fast SerDes, multi-stage Transimpedance Amplifiers (TIA), and high-efficiency inverter drivers. Stacked directly over the PIC via bump-less Cu-Cu fusion bonding to bring active driver circuits to the absolute minimum distance from cooling lids.">
+                    <rect id="eic-layer" x="200" y="300" width="400" height="50" rx="5" fill="#f59e0b"/>
+                    <text x="220" y="330" fill="#020617" font-weight="bold">EIC Logic</text>
+                </g>
+                <g class="layer" id="pic-layer-group" data-info="PIC Layer & Waveguide Core Channel: Photonic Integrated Circuit (PIC) routing core. SiN core provides an ultra-low propagation loss of <0.01 dB/cm and bending loss of <0.001 dB/turn. Wideband spectrum operation thoroughly spans 1260 to 1360 nm across the full O-band domain.">
+                    <rect id="pic-layer" x="200" y="350" width="400" height="70" rx="5" fill="#0f172a"/>
+                    <rect id="waveguide-track" x="220" y="380" width="360" height="10" fill="#38bdf8"/>
+                </g>
                 
-                <!-- Interposer -->
-                <rect x="100" y="450" width="600" height="100" rx="5" fill="#334155"/>
-                <g id="data-packets"></g>
-                
-                <defs>
-                    <linearGradient id="fiberGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
-                </defs>
+                <!-- Laser Path -->
+                <line id="laser-beam" x1="400" y1="170" x2="400" y2="270" stroke="#fef08a" stroke-width="4"/>
             </svg>
-            <div id="eye-diagram-box" class="hidden">WIDE OPEN EYE DIAGRAM</div>
+            <div id="alert-pulse" class="hidden">CRITICAL ALIGNMENT ALERT</div>
         </main>
+        
+        <aside id="info-panel">
+            <h2>Structural Principles</h2>
+            <div id="layer-description">Hover or click a layer to view details.</div>
+        </aside>
     </div>
+    
+    <footer id="glossary">
+        <h2>Engineering Glossary</h2>
+        <div class="glossary-grid">
+            <div class="g-item"><strong>Lateral Offset (ΔY/ΔZ):</strong> Governed by mode overlap integration, cross-alignment error exceeding ±1.6μm causes exponential power decay, crossing the 0.5 dB threshold.</div>
+            <div class="g-item"><strong>Longitudinal Gap (ΔX):</strong> Parallel collimated beam mapping allows an expansive margin up to 36μm before clipping signal boundaries.</div>
+            <div class="g-item"><strong>Laser Input Power (P_in):</strong> High intensity induces non-linear Two-Photon Absorption (TPA) and Free-Carrier Absorption (FCA) in Silicon, leading to catastrophic thermal burnout at 24.43 dBm.</div>
+            <div class="g-item"><strong>Interconnect Bonding:</strong> Scaling to bump-less SoIC down-sizes pitch from 50μm to 9μm, reducing parasitic capacitance and boosting trans-die speed by 16.6X.</div>
+            <div class="g-item"><strong>Substrate Shielding:</strong> Upgrading from standard organic MCM to Enhanced Interposer (CoWoS-L) reduces link trace lengths from 8000μm to 500μm, escalating routing density by 25X.</div>
+        </div>
+    </footer>
     <script src="script.js"></script>
 </body>
 </html>

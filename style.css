@@ -2,16 +2,25 @@
     --bg-color: #020617;
     --sidebar-bg: #1e293b;
     --text-main: #f8fafc;
+    --accent: #38bdf8;
+    --panel-bg: #0f172a;
 }
 
-body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-main); }
-#app { display: flex; height: 100vh; }
-#controls { width: 350px; background: var(--sidebar-bg); padding: 20px; border-right: 1px solid #334155; }
-#diagram-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
+body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; }
+header { padding: 10px 20px; background: var(--panel-bg); text-align: center; }
+#app { display: flex; flex: 1; overflow: hidden; }
 
-#alert-pulse { background: #dc2626; color: white; padding: 10px; margin-top: 20px; font-weight: bold; animation: pulse 1s infinite; }
+#controls { width: 300px; background: var(--sidebar-bg); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; gap: 20px; }
+#diagram-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
+#info-panel { width: 300px; background: var(--panel-bg); padding: 20px; border-left: 1px solid #334155; }
+
+#tech-info-box { background: #334155; padding: 15px; border-radius: 5px; font-size: 0.9em; }
+#glossary { background: var(--panel-bg); padding: 20px; border-top: 1px solid #334155; }
+.glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; font-size: 0.85em; }
+
+.layer { cursor: pointer; transition: opacity 0.2s; }
+.layer:hover { opacity: 0.7; }
+#alert-pulse { position: absolute; top: 20px; left: 20px; background: #dc2626; color: white; padding: 10px; font-weight: bold; animation: pulse 1s infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .hidden { display: none; }
-
-#eye-diagram-box { position: absolute; bottom: 50px; right: 50px; background: #059669; padding: 15px; color: white; font-weight: bold; }
-#waveguide-track.burnout { fill: #475569; filter: drop-shadow(0 0 5px #000); }
+#waveguide-track.burnout { fill: #475569; }
