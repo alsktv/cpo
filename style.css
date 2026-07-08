@@ -11,7 +11,10 @@ body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-color);
 header { padding: 10px 20px; background: var(--panel-bg); text-align: center; }
 #app { display: flex; flex: 1; overflow: hidden; }
 
-#controls { width: 300px; background: var(--sidebar-bg); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; gap: 20px; }
+#controls { width: 300px; background: var(--sidebar-bg); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; gap: 10px; }
+#controls label { display: block; margin-bottom: 5px; font-size: 0.9em; }
+#controls select, #controls input { width: 100%; margin-top: 5px; }
+
 #diagram-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; background: #000; }
 #cpoCanvas { cursor: crosshair; }
 #insights-log { width: 300px; background: var(--panel-bg); padding: 20px; border-left: 1px solid #334155; overflow-y: auto; font-size: 0.9em; }
