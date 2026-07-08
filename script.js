@@ -1,4 +1,4 @@
-const inputs = ['dy', 'gap', 'material', 'pin', 'interconnect', 'substrate'];
+const inputs = ['dy', 'gap', 'pin', 'material', 'interconnect', 'substrate'];
 
 function update() {
     const dy = parseFloat(document.getElementById('dy').value);
@@ -7,41 +7,35 @@ function update() {
     const interconnect = document.getElementById('interconnect').value;
     const substrate = document.getElementById('substrate').value;
 
-    // 1. Coupling & Alert
-    const beamPath = document.getElementById('beam-path');
-    beamPath.setAttribute('d', `M0 25 L 600 25`);
-    const alertBox = document.getElementById('alert-box');
+    // Alignment Mechanics
+    const lensTop = document.getElementById('lens-top');
+    lensTop.setAttribute('cx', 400 + (dy * 20));
+    
+    const beam = document.getElementById('laser-beam');
     if (dy > 1.6) {
-        beamPath.classList.add('blur');
-        alertBox.classList.remove('hidden');
+        beam.style.filter = 'blur(5px)';
+        document.getElementById('alert-pulse').classList.remove('hidden');
     } else {
-        beamPath.classList.remove('blur');
-        alertBox.classList.add('hidden');
+        beam.style.filter = 'none';
+        document.getElementById('alert-pulse').classList.add('hidden');
     }
 
-    // 2. Waveguide Burnout/Glow
-    const picLayer = document.getElementById('layer-pic');
+    // Thermal/Burnout
+    const eic = document.getElementById('eic-layer');
+    eic.style.fill = (interconnect === 'SoIC') ? '#10b981' : '#f59e0b';
+    
+    const track = document.getElementById('waveguide-track');
     if (material === 'Si' && pin >= 24.43) {
-        picLayer.style.backgroundColor = '#7f1d1d'; // Dark red
-        picLayer.style.boxShadow = '0 0 20px #ef4444';
-    } else if (material === 'SiN') {
-        picLayer.style.backgroundColor = '#1e3a8a'; // Dark blue
-        picLayer.style.boxShadow = `0 0 ${pin - 15}px #38bdf8`;
+        track.classList.add('burnout');
+        track.setAttribute('fill', '#374151');
     } else {
-        picLayer.style.backgroundColor = '#1f2937';
-        picLayer.style.boxShadow = 'none';
+        track.classList.remove('burnout');
+        track.setAttribute('fill', material === 'SiN' ? '#38bdf8' : '#fbbf24');
     }
 
-    // 3. Scaling & Thermal
-    const eicLayer = document.getElementById('layer-eic');
-    const eye = document.getElementById('eye-diagram');
-    if (interconnect === 'SoIC' && substrate === 'CoWoS') {
-        eicLayer.style.backgroundColor = '#064e3b'; // Cool blue/green
-        eye.classList.remove('hidden');
-    } else {
-        eicLayer.style.backgroundColor = '#f59e0b'; // Orange
-        eye.classList.add('hidden');
-    }
+    // Interposer Data
+    const eye = document.getElementById('eye-diagram-box');
+    eye.classList.toggle('hidden', !(interconnect === 'SoIC' && substrate === 'CoWoS'));
 }
 
 inputs.forEach(id => document.getElementById(id).addEventListener('input', update));

@@ -3,48 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPO Architectural Simulator</title>
+    <title>CPO High-Fidelity Simulator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="app">
-        <section id="controls">
-            <h2>CPO Control Panel</h2>
-            <label>ΔY / ΔZ Lateral Offset (μm): <input type="range" id="dy" min="0" max="5" step="0.1" value="1.6"></label>
-            <label>Longitudinal Gap (μm): <input type="range" id="gap" min="0" max="50" step="1" value="36"></label>
-            <label>Waveguide Material: 
-                <select id="material">
-                    <option value="Si">Silicon (Si)</option>
-                    <option value="SiN">Silicon Nitride (SiN)</option>
-                </select>
-            </label>
-            <label>Input Laser Power (dBm): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
-            <label>Interconnect Bonding: 
-                <select id="interconnect">
-                    <option value="bump">Conventional μbump</option>
-                    <option value="SoIC">TSMC SoIC™</option>
-                </select>
-            </label>
-            <label>Substrate Shielding: 
-                <select id="substrate">
-                    <option value="MCM">Standard MCM</option>
-                    <option value="InFO">RDL InFO</option>
-                    <option value="CoWoS">CoWoS-L</option>
-                </select>
-            </label>
-            <div id="alert-box" class="hidden">Optical Alignment Alert!</div>
-        </section>
-        <section id="visualization">
-            <div class="stack">
-                <div class="layer" id="layer-ifau">iFAU Fiber Block</div>
-                <div class="layer" id="layer-coit">COIT Stage & Upper Grating</div>
-                <div class="layer" id="layer-gap">Lens Open Gap Area <svg id="beam-svg"><path id="beam-path" d="" /></svg></div>
-                <div class="layer" id="layer-coib">COIB Stage</div>
-                <div class="layer" id="layer-eic">EIC Logic & Driver Hub</div>
-                <div class="layer" id="layer-pic">PIC Layer / Waveguide Core</div>
-                <div class="layer" id="layer-substrate">Enhanced Interposer Substrate <div id="eye-diagram" class="hidden">Eye Diagram Open</div></div>
+        <aside id="controls">
+            <h2>System Parameters</h2>
+            <div class="control-group">
+                <label>Lateral Offset (ΔY): <input type="range" id="dy" min="0" max="5" step="0.1" value="1.6"></label>
+                <label>Longitudinal Gap: <input type="range" id="gap" min="0" max="50" step="1" value="36"></label>
+                <label>Laser Power (P_in): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
+                <label>Waveguide: <select id="material"><option value="Si">Silicon</option><option value="SiN">Silicon Nitride</option></select></label>
+                <label>Interconnect: <select id="interconnect"><option value="bump">μbump</option><option value="SoIC">TSMC SoIC</option></select></label>
+                <label>Substrate: <select id="substrate"><option value="MCM">Standard MCM</option><option value="InFO">RDL InFO</option><option value="CoWoS">CoWoS-L</option></select></label>
             </div>
-        </section>
+            <div id="alert-pulse" class="hidden">CRITICAL ALIGNMENT ALERT</div>
+        </aside>
+        <main id="diagram-container">
+            <svg id="diagram" viewBox="0 0 800 600">
+                <!-- iFAU Fiber Array -->
+                <rect x="50" y="50" width="700" height="40" fill="url(#fiberGrad)" rx="10"/>
+                
+                <!-- Micro-Lenses -->
+                <ellipse id="lens-top" cx="400" cy="150" rx="40" ry="20" fill="#a1a1aa" opacity="0.8"/>
+                <ellipse id="lens-bottom" cx="400" cy="250" rx="40" ry="20" fill="#a1a1aa" opacity="0.8"/>
+                
+                <!-- Laser Beam Path -->
+                <line id="laser-beam" x1="400" y1="150" x2="400" y2="250" stroke="#fef08a" stroke-width="6"/>
+
+                <!-- COUPE Engine (EIC on PIC) -->
+                <rect id="coupe-block" x="200" y="300" width="400" height="120" rx="5" fill="#1e293b"/>
+                <rect id="eic-layer" x="200" y="300" width="400" height="50" rx="5" fill="#f59e0b"/>
+                <rect id="pic-layer" x="200" y="350" width="400" height="70" rx="5" fill="#0f172a"/>
+                <rect id="waveguide-track" x="220" y="380" width="360" height="10" fill="#38bdf8"/>
+                
+                <!-- Interposer -->
+                <rect x="100" y="450" width="600" height="100" rx="5" fill="#334155"/>
+                <g id="data-packets"></g>
+                
+                <defs>
+                    <linearGradient id="fiberGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#475569"/><stop offset="100%" stop-color="#1e293b"/></linearGradient>
+                </defs>
+            </svg>
+            <div id="eye-diagram-box" class="hidden">WIDE OPEN EYE DIAGRAM</div>
+        </main>
     </div>
     <script src="script.js"></script>
 </body>
