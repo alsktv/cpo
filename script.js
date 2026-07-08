@@ -5,12 +5,12 @@ const insightText = document.getElementById('insight-text');
 
 // Handle dynamic parameter insight updates
 const paramInsights = {
-    dy: "Lateral Offset: Misalignment beyond 1.6μm causes >0.5dB signal penalty due to mode overlap decay.",
-    gap: "Longitudinal Gap: Maintaining collimation allows up to 36μm spacing before beam divergence causes clipping.",
-    pin: "Laser Power: Excessive CW power triggers Two-Photon Absorption (TPA) in Silicon, leading to thermal burnout.",
-    material: "Waveguide Material: SiN offers superior transparency (lower propagation loss) compared to bulk Silicon in the O-band.",
-    interconnect: "Interconnect: Bump-less SoIC significantly reduces parasitic capacitance compared to conventional μbumps.",
-    substrate: "Substrate: CoWoS-L packaging reduces trace lengths for high-density routing and superior signal integrity."
+    dy: "측면 오프셋: 1.6μm를 초과하는 오정렬은 모드 중첩 감쇠로 인해 >0.5dB의 신호 손실을 유발합니다.",
+    gap: "종방향 간격: 평행 콜리메이팅을 통해 36μm까지의 간격까지는 빔 발산으로 인한 손실을 억제합니다.",
+    pin: "레이저 입력 전력: 과도한 CW 전력은 실리콘 내 2광자 흡수(TPA)를 유발하여 열적 파괴를 초래합니다.",
+    material: "도파관 재질: 질화규소(SiN)는 실리콘에 비해 O-밴드에서 광 투과율이 우수하고 손실이 적습니다.",
+    interconnect: "인터커넥트: 펌프 없는 SoIC는 기존 μ범프 대비 기생 커패시턴스를 획기적으로 줄여줍니다.",
+    substrate: "기판: CoWoS-L 패키징은 배선 경로를 단축하여 고밀도 라우팅과 신호 무결성을 향상시킵니다."
 };
 
 function update() {
