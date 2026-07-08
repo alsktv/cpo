@@ -5,6 +5,8 @@
     --accent: #38bdf8;
     --panel-bg: #0f172a;
     --warning: #dc2626;
+    --tx-color: #fef08a;
+    --rx-color: #38bdf8;
 }
 
 body { margin: 0; font-family: 'Inter', sans-serif; background: var(--bg-color); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; }
@@ -13,6 +15,8 @@ header { padding: 10px 20px; background: var(--panel-bg); text-align: center; }
 
 #controls { width: 300px; background: var(--sidebar-bg); padding: 20px; border-right: 1px solid #334155; display: flex; flex-direction: column; gap: 20px; }
 #diagram-container { flex: 1; display: flex; align-items: center; justify-content: center; position: relative; }
+#diagram, #animation-canvas { position: absolute; width: 800px; height: 800px; }
+#animation-canvas { pointer-events: none; }
 #insights-log { width: 300px; background: var(--panel-bg); padding: 20px; border-left: 1px solid #334155; overflow-y: auto; font-size: 0.9em; }
 
 #tech-info-box { background: #334155; padding: 15px; border-radius: 5px; }
@@ -21,3 +25,8 @@ header { padding: 10px 20px; background: var(--panel-bg); text-align: center; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .hidden { display: none; }
 .burnout { stroke: var(--warning) !important; filter: drop-shadow(0 0 5px var(--warning)); }
+
+/* Animation Classes */
+.data-packet { fill: #f59e0b; }
+.optical-beam { stroke: var(--tx-color); stroke-width: 4; stroke-dasharray: 10; animation: flow 2s linear infinite; }
+@keyframes flow { from { stroke-dashoffset: 20; } to { stroke-dashoffset: 0; } }

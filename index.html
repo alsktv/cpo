@@ -12,12 +12,18 @@
         <aside id="controls">
             <h2>시스템 파라미터</h2>
             <div class="control-group">
+                <label>동작 모드:
+                    <select id="mode">
+                        <option value="TX">Transmission (TX) Mode</option>
+                        <option value="RX">Receiver (RX) Mode</option>
+                    </select>
+                </label>
                 <label>측면 오프셋 (ΔY/ΔZ): <input type="range" id="dy" min="0" max="5" step="0.1" value="1.6"></label>
                 <label>종방향 간격 (ΔX): <input type="range" id="gap" min="0" max="50" step="1" value="36"></label>
                 <label>레이저 입력 전력 (P_in): <input type="range" id="pin" min="6" max="26" step="0.1" value="20"></label>
                 <label>도파관: <select id="material"><option value="Si">실리콘 (Si)</option><option value="SiN">질화규소 (SiN)</option></select></label>
                 <label>인터커넥트: <select id="interconnect"><option value="bump">μ범프</option><option value="SoIC">TSMC SoIC</option></select></label>
-                <label>기판: <select id="substrate"><option value="MCM">표준 MCM</option><option value="InFO">RDL InFO</option><option value="CoWoS">CoWoS-L</option></select></label>
+                <label>기판: <select id="substrate"><option value="MCM">표준 MCM</option><option value="CoWoS">CoWoS-L (Enhanced)</option></select></label>
             </div>
             <div id="tech-info-box">
                 <h3>엔지니어링 인사이트</h3>
@@ -27,59 +33,51 @@
         
         <main id="diagram-container">
             <svg id="diagram" viewBox="0 0 800 800">
-                <!-- FAU Housing -->
+                <!-- 1. FAU Housing -->
                 <g id="fau-housing">
-                    <rect x="50" y="50" width="700" height="100" fill="#1e293b" stroke="#475569" stroke-width="2" rx="10"/>
-                    <text x="60" y="80" fill="#f8fafc" font-weight="bold">FAU Housing</text>
-                    <circle cx="100" cy="110" r="10" fill="#94a3b8"/>
-                    <text x="120" y="115" fill="#f8fafc" font-size="12">Fibers</text>
-                    <path d="M100 110 L300 110 L400 150" stroke="#fef08a" stroke-width="2" fill="none"/>
-                    <text x="400" y="150" fill="#fef08a" font-size="12" font-weight="bold">TMR</text>
+                    <rect x="50" y="20" width="700" height="60" fill="#1e293b" stroke="#475569" stroke-width="2" rx="5"/>
+                    <text x="60" y="55" fill="#f8fafc" font-weight="bold">FAU Housing (TMR)</text>
                 </g>
-
-                <!-- COIT -->
+                <!-- 2. COIT Stage -->
                 <g id="coit-block">
-                    <rect x="200" y="180" width="400" height="60" fill="#334155" stroke="#475569" rx="5"/>
-                    <text x="210" y="210" fill="#f8fafc" font-weight="bold">COIT</text>
-                    <line x1="210" y1="225" x2="590" y2="225" stroke="#38bdf8" stroke-width="2"/>
-                    <text x="300" y="220" fill="#38bdf8" font-size="12">SiN WG (w/ PBSR)</text>
+                    <rect x="200" y="90" width="400" height="50" fill="#334155" stroke="#475569" rx="5"/>
+                    <text x="210" y="120" fill="#38bdf8" font-weight="bold">COIT Stage (SiN WG)</text>
                 </g>
-
-                <!-- Micro-Lenses -->
-                <ellipse id="lens-top" cx="400" cy="270" rx="30" ry="15" fill="#a1a1aa" opacity="0.8"/>
-                <text x="440" y="275" fill="#f8fafc" font-size="12">Micro-Lens</text>
-                <ellipse id="lens-bottom" cx="400" cy="350" rx="30" ry="15" fill="#a1a1aa" opacity="0.8"/>
-                <line id="laser-beam" x1="400" y1="285" x2="400" y2="335" stroke="#fef08a" stroke-width="4"/>
-
-                <!-- EIC & PIC -->
-                <g id="eic-layer">
-                    <rect x="200" y="400" width="400" height="60" fill="#f59e0b" rx="5"/>
-                    <text x="210" y="435" fill="#020617" font-weight="bold">EIC</text>
+                <!-- 3. Free Space Gap -->
+                <g id="optical-gap">
+                    <ellipse id="lens-top" cx="400" cy="170" rx="30" ry="15" fill="#a1a1aa" opacity="0.8"/>
+                    <ellipse id="lens-bottom" cx="400" cy="230" rx="30" ry="15" fill="#a1a1aa" opacity="0.8"/>
+                    <line id="laser-beam" x1="400" y1="185" x2="400" y2="215" stroke="#fef08a" stroke-width="4"/>
                 </g>
-                <g id="pic-layer">
-                    <rect x="200" y="460" width="400" height="80" fill="#0f172a" stroke="#475569" rx="5"/>
-                    <text x="210" y="490" fill="#f8fafc" font-weight="bold">PIC</text>
-                    <line x1="210" y1="500" x2="590" y2="500" stroke="#f59e0b" stroke-width="2"/>
-                    <text x="210" y="515" fill="#f59e0b" font-size="12">SOI</text>
-                    <line x1="210" y1="525" x2="590" y2="525" stroke="#38bdf8" stroke-width="2"/>
-                    <text x="210" y="540" fill="#38bdf8" font-size="12">SiN WG</text>
-                    <rect x="550" y="510" width="30" height="20" fill="#ef4444"/>
-                    <text x="560" y="525" fill="#fff" font-size="10">BMR</text>
-                    <text x="500" y="530" fill="#fff" font-size="10">COIB</text>
+                <!-- 4. COIB Stage -->
+                <g id="coib-block">
+                    <rect x="200" y="250" width="400" height="50" fill="#334155" stroke="#475569" rx="5"/>
+                    <text x="210" y="280" fill="#38bdf8" font-weight="bold">COIB Stage (BMR)</text>
                 </g>
-
-                <!-- Interconnect -->
+                <!-- 5. 3D COUPE Core (EIC + PIC) -->
+                <g id="core-engine">
+                    <rect x="200" y="320" width="400" height="100" fill="#f59e0b" rx="5"/>
+                    <text x="210" y="350" fill="#020617" font-weight="bold">EIC (Drivers/TIAs)</text>
+                    <rect x="200" y="420" width="400" height="80" fill="#0f172a" stroke="#475569" rx="5"/>
+                    <text x="210" y="450" fill="#f8fafc" font-weight="bold">PIC Layer</text>
+                </g>
+                <!-- 6. Interconnect -->
                 <g id="interconnect-interface">
-                    <text x="210" y="570" fill="#f8fafc" font-weight="bold">Interconnect Interface (μbump / SoIC Bond)</text>
-                    <g id="bond-nodes"></g>
+                    <rect x="200" y="520" width="400" height="40" fill="#475569" rx="5"/>
+                    <text x="210" y="545" fill="#f8fafc">Interconnect Interface (Bump/SoIC)</text>
                 </g>
-
-                <!-- Substrate -->
+                <!-- 7. Substrate -->
                 <g id="substrate-layer">
-                    <rect x="50" y="600" width="700" height="150" fill="#334155" rx="5"/>
-                    <text x="60" y="630" fill="#f8fafc" font-weight="bold">Substrate / Advanced Interposer</text>
+                    <rect x="50" y="580" width="700" height="60" fill="#334155" rx="5"/>
+                    <text x="60" y="615" fill="#f8fafc" font-weight="bold">Substrate / Interposer Layer</text>
+                </g>
+                <!-- 8. ASIC -->
+                <g id="asic-block">
+                    <rect x="50" y="660" width="700" height="100" fill="#7c3aed" rx="10"/>
+                    <text x="60" y="715" fill="#ffffff" font-size="20" font-weight="bold">ASIC (XPU) Compute Block</text>
                 </g>
             </svg>
+            <canvas id="animation-canvas" width="800" height="800"></canvas>
             <div id="alert-pulse" class="hidden">정렬 경고: 임계값 초과</div>
         </main>
         
@@ -91,6 +89,6 @@
         </div>
     </div>
     
-    <script src="simulation_engine.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
